@@ -1,124 +1,173 @@
-# Project 0 - Reference Material and Submitting Projects[^1]
+# Project 4: Page Generation with ReactJS [^1]
 
-## Introductionn
+## Setup
 
-The projects for this class assume you can do the following:
-- Use a *CLI* (command line interface) to perform system level functions
-- Use a *CLI* or *IDE* to manage and update files
-- Use fundamental programming knowledge from prior courses to pickup languages used in this course
-- Create a user account 
-- Work on a team
+You should already have installed Node.js and the npm package manager on your system. If not, follow the installation instructions in [Project 0](https://github.com/btdobbs/WA/edit/main/Project/00/README.md) now.
 
-Project 0 will require you to:
+Create a directory `project4` and extract the contents of this repository into the directory.  These files are the starter files for this assignment.
 
-- Download template files
-- Make a simple text file update
-- Create or use an existing GitHub account
-- Upload files to a GitHub repository
-- Submit a GitHub URL to an LMS (Learning Mangement System)
-- Create or use an existing JetBrains account
+This assignment requires many node modules that contain the tools (e.g. [Webpack](https://webpack.js.org/), [Babel](https://babeljs.io/), [ESLint](https://eslint.org/)) needed to build a [ReactJS](https://reactjs.org/) web application as well as a simple Node.js web server ([ExpressJS](http://expressjs.com/)) to serve it to your browser. These modules can be fetched by running the following command in the `project4` directory:
 
-## Files to Edit and Submit
+```sh
+npm install
+```
 
-You will fill in portions of ```p0.html```. Please do not change the other files in this repository or add new files to your repository. Submit GitHub URL to an LMS. The due dates for projects are listed on the syllabus. No late project will be accepted without an official excuse.
+That command will fetch around 600 node modules using around 100 megabytes of space into the subdirectory `node_modules`.
 
-## Evaluation
+We can use npm to run the various tools we had it fetch. As can be seen in the `"scripts"` property of the `package.json` file, the following run commands are available:
 
-Most of the requirements for each project are based on the design and functionality of your project. There are also style requirements which are awarded based on how you solve the problem. These reflect the importance of things such as proper HTML validation, clean code structure, and nice-looking interfaces. These requirements are described in each project.
+- `npm run build` - Runs [Webpack](https://webpack.js.org/) using the configuration file `webpack.config.js` to package all of the project's JSX files into a single JavaScript bundle in the directory `compiled`.
+- `npm run build:w` - Runs [Webpack](https://webpack.js.org/) like the `npm run build` command except it invokes webpack with [--watch](https://webpack.js.org/api/cli/#watch), so it will monitor the React components and regenerate the bundle if any of them change. This option is useful for development so changes made to components can be picked up by simply refreshing the browser to load the newly updated bundle. Otherwise, you would need to remember to run `npm run build` after every change. You might get a deprecation warning `[DEP_WEBPACK_WATCH_WITHOUT_CALLBACK]` that you can safely ignore.
+- `npm run lint` - Runs ESLint on all the project's JavaScript files. The code you submit should run ESLint without warnings.
 
-## Browsers
+Your solutions for all of the problems below should be implemented in the `project4` directory.
 
-Web browsers are still not 100% identical in their behavior, and it is possible for web pages to behave differently on different browsers. For this course, the reference browser is Chrome.  Your project solutions must work on Chrome.  You may use a different browser to develop your solutions if you wish.  Chrome, Firefox, and Safari all have very similar behavior. Please test on Chrome before submitting. We do not recommend that you use Internet Explorer for development. Historically, its behavior has been quite different from the other browsers.
+This project uses [ReactJS](https://reactjs.org/), a popular framework for building web applications. The project's goal is to get you enough up to speed with ReactJS and the coding conventions that you will be able to build a web application with it in the next project.
 
-## Academic Dishonesty and Getting Help
+In order to fetch our web app via the HTTP protocol, we use a simple Node.js web server that can be started with this command from the `project4` directory:
 
-Please follow the [50 foot Policy](https://www.dna.caltech.edu/courses/cs191/50ft_policy.pdf) when collaborating on projects.  This applies at the team level for group projects.
+```sh
+node webServer.js
+```
 
-## References
+All the files in the `project4` can be fetched using an URL starting with [http://localhost:3000](http://localhost:3000). Click on [http://localhost:3000](http://localhost:3000) to verify your web server is running. It should serve the file `index.html` to your browser.
 
-There are no required textbooks for this class. To complete programming projects, you will need additional reference material that is available on the Web.
+We recommend you configure your development environment to run webpack in watch mode, which means you will need to run the node webserver (`node webServer.js`) and webpack (`npm run build:w`) when building and testing your project. You could do this by running the programs in different command line windows. Syntax errors get detected and reported by Babel, so the output of webpack is useful.
 
-## MERN Stack
+If you are running on a system with a unix-like shell like MacOS, the command:
 
-The web applications built in the course's projects will use what is known as the MERN stack. The MERN stack uses the JavaScript language in both the browser and the server-side.
+```sh
+node webServer.js & npm run build:w
+```
 
-- [MERN stack](https://en.wikipedia.org/wiki/MEAN_(solution_stack)#Angular_and_alternatives)(*see MERN discription in the text of the link*)
-- [MongoDB](https://www.mongodb.com)
-- [mongoose](https://mongoosejs.com)
-- [React](https://reactjs.org)
-- [Express](https://expressjs.com)
-- [Node](https://nodejs.org/en/)
+runs the web server in background and the webpack in foreground within a single window.
 
-## MERN Installation
+On Windows you can start the web server in background and webpack in foreground with the two Windows commands:
 
-If you don't already have MERN packages installed on your laptop, follow the instructions below to install them.
+```sh
+start /B node webServer.js
+npm run build:w
+```
 
-### Installing Node.js
+You can stop the background webserver with the command:
 
-Install the latest "Long Term Support (LTS)" version of Node.js (currently version 18.12.1). It can be downloaded from [this](https://nodejs.org/en/download) URL. To verify you have Node.js and its package manager (npm), try running the commands:
+```sh
+taskkill /IM node.exe /F
+```
 
-```node -v```
+## Getting Started
 
-and:
+In this project we require that you use the model, view, controller pattern described in class. There are many ways of organizing code under this pattern so we provide an example that both demonstrates some basic ReactJS features as well as showing the file system layout and module pattern we would like you to follow in your projects.
 
-```npm -v```
+You should start by opening the example in your browser by navigating to the URL [http://localhost:3000/getting-started.html](http://localhost:3000/getting-started.html). The page displays examples of ReactJS in action. The HTML in `getting-started.html` provides a `<div>` for ReactJS to draw the app into and a script tag include the app's JavaScript bundle `compiled/gettingStarted.bundle.js`. The webpack config file [webpack.config.js](http://localhost:3000/webpack.config.js) directs that this bundle be created from the ReactJS file `gettingStarted.jsx`, a JSX program that renders the ReactJS component named `Example` into the `<div>` in `getting-started.html`.
 
-which should run and print out the version numbers of your node and npm programs.
+To support reusable components, we adopt a file organization that co-locates the ReactJS component and its associated CSS stylesheet in a subdirectory of a directory named `components`. The `Example` component is located in the files `components/example/Example.jsx,Example.css}`.
 
-### Installing MongoDB
+You should look through the files invoked in the `getting-started.html` view (`getting-started.html`, `gettingStarted.jsx`, `components/example/Example.jsx`) since it shows the JavaScript and JSX statements needed to run an ReactJS web application along with explanatory comments. You should use this pattern and file naming convention for the other components you build for the class.
 
-Install the MongoDB Community Edition from [this](https://docs.mongodb.com/manual/administration/install-community/) website.
+Model data is typically fetched from the webserver which retrieves the data from a database. To avoid having to set up a database for this project we will give you an HTML script tag to load the model data directly into the browser's DOM from the local file system. The models will appear in the DOM under the property name `models`. You will be able to access it under the name `window.models` in a ReactJS component.
 
-Once you start the MongoDB server using the command
+## Problem 1: Understand and update the example view
 
-```mongod``` (the exact arguments depend on where you placed the database)
+You should look through and understand the `getting-started.html` view and the `Example` component. To demonstrate your understanding do the following:
 
-you should be able to directly interact with the MongoDB database by running the command:
+1. Update the model data for the Example component to use your name rather than "Unknown name". You should find where "Unknown name" is and replace it.
+2. Replace the contents of the `div` region with the class `motto-update` in the Example component with some JSX statements that display your name and a short (up to 20 characters) motto. Like the user's name, the initial value for motto should come in with the model data. You must include some styling for this display in `Example.css`.
+3. Extend the display you did in the previous step so it allows the user to update the motto being displayed. The default value should continue to be retrieved from the model data.
 
-```mongosh```
+## Problem 2: Create a new component - states view
 
-Type help at the command prompt to see the available commands.
+Create a new component view that will display the names of all states containing a given substring. Your view must implement an input field that accepts a substring. The view will display in alphabetical order an HTML **list** of all states whose names contain the given substring (ignoring differences in case). For example, the view for the substring of "al" should list the states Alabama, Alaska, and California. The list should automatically update after each character that the user types in. The page should also display the substring that was used to filter the states in a new element separate from the input field. If there are no matching states then the web page should display a message indicating that fact (rather than just showing nothing). All states should be displayed when the substring is empty.
 
-For Windows users, you may need to add the location of where MongoDB was installed to your environment path variable in order to run the commands. This is usually located at
+As in Problem #1 we provide you the model data with states. It can be accessed via `window.models.states` after it is included with:
 
-```C:\Program Files\MongoDB\Server\<version_number>\bin```
+```xhtml
+<script src="modelData/states.js"></script>
+```
 
-## Reference Documentation for HTML, CSS, and the DOM
+See `states.js` for a description of the format of the states data.
 
-- [Mozilla Developer Network](https://developer.mozilla.org/en-US/)(*see the Guides menu*)
-- [W3Scools](https://www.w3schools.com)(*see tutorials and references menu*)
-- [Dynamic HTML: The Definitive Reference](https://www.oreilly.com/library/view/dynamic-html-the/0596527403/)
+To help you get started and guide you to the file naming conventions we want you to use we provided a file `p2.html` that will load and display the bundle `compiled/p2.bundle.js` which is generated by webpack from `p2.jsx` which displays the React component `States`. You can open this file in your browser via the URL [http://localhost:3000/p2.html](http://localhost:3000/p2.html).
 
-## Reference Documentation for JavaScript
-- [Mozilla Developer Network](https://developer.mozilla.org/en-US/)(*see the Guides menu*)
-- [W3Scools](https://www.w3schools.com)(*see tutorials and references menu*)
-- [Eloquent JavaScript](https://eloquentjavascript.net)
-- [ECMA Script](https://tc39.es/ecma262/)
-- [JavaScript](https://www.oreilly.com/library/view/javascript-the-definitive/9781491952016/)
-- [JavaScript: The Good Parts](https://www.oreilly.com/library/view/javascript-the-good/9780596517748/)
-- [Learning JavaScript Design Patterns](https://www.oreilly.com/library/view/learning-javascript-design/9781098139865/)
+The files you will need to implement are:
 
-## IDE (Interactive Development Environment)(*optional*)
+- `components/states/States.jsx` - The ReactJS Component of your states component.
+- `components/states/States.css` - Any CSS styles your component needs. **You must include some styling for your state list here.**
 
-[WebStorm](https://www.jetbrains.com/webstorm/) and [DataGrip](https://www.jetbrains.com/datagrip/) are recommended for this course.  You will need to signup for a JetBrains account to use these products.  Request free product downloads with your university email.
-    
-## Q1: Your Name
+## Problem 3: Personalizing the Layout
 
-- Download the files for [p0](https://github.com/btdobbs/WA/tree/main/Project/00/p0)
-- Update the word *My* in p0.html to the possessive form of your name.  There are two changes to make.
-  - **Example:** If my name is Bob, I would change *My test page* to *Bob's test page* 
+Create a ReactJS component named `Header` that will display a personalized header at the top of a view. Add this header to all ReactJS web apps in your assignment (`gettingStarted.jsx`, `p2.jsx`, `p4.jsx`, `p5.jsx`). Note that you **should not** replace the section from part 1 (your name and motto). That section should be separate from your header. Use your imagination and creativity to create a header that is "uniquely you". This can include additional images, graphics, whatever you like. You can extend the JSX/JavaScript in the components but you may not use external ReactJS Components or JavaScript libraries such as JQuery. Be creative! A colored rectangle with plain text is not sufficient.
 
-## Submission Guidelines
+The files you will need to implement are:
 
-### Cleaning up before submitting
+- `components/header/Header.jsx` - The ReactJS Component of your header component. This is defined as a class Header of type [React.Component](https://reactjs.org/docs/react-component.html).
+- `components/header/Header.css` - Any CSS styles your component needs. **You must include some styling for your header here**.
 
-Please don't add any unnecessary files to your project repository. The web tools used with projects can generate hundreds of megabytes worth of files in your project directory that are not needed. The contents of the following directories contain generated files that can safely be deleted since we can regenerate them while grading:
+## Problem 4: Add dynamic switching of the views
 
-- node_modules - Contains the modules fetched by npm based the specification in ```package.json``` file.
-- compiled - Contains the bundled JavaScript product by the React.js tool chain.
+Create a `p4.html` and a corresponding JSX file `p4.jsx` that includes both view components (the `Example` and `States` components). The `p4.jsx` needs to implement an ability to switch between the display of the two components. When a view is displayed there should be a button above it that switches to display the other view. For example, when the `States` view is displayed the button above it should read "Switch to Example," and when pushed the `States` should disappear and the `Example` view should be displayed.
 
-### GitHub URL
+For this problem you will need to create the files above as well as modify the webpack configuration file `webpack.config.js` to build a file `compiled/p4.bundle.js` that you can uses in `p4.html` file. Note that if you are using Webpack with the `--watch` flag (i.e. `npm run build:w`), you will need to restart it after changing `webpack.config.js`.
 
-Please create a repository for each project.  Provide the github link to your project repository and not a folder in the repository.
+## Problem 5: Single page app
+
+Although the approach taken in Problem 4 allows you to switch between the two views, it does not allow you to bookmark or share a URL pointing at a particular view. Even doing a browser refresh event causes the app to lose track of which view was being displayed.
+
+We can address this deficiency by storing the view information into the URL. [React Router](https://v5.reactrouter.com/) provides this functionality for ReactJS. For this problem make a copy of your `p4.html` solution into a file named `p5.html` and copy your `p4.jsx` into a file named `p5.jsx`. Convert the code to use [React Router](https://v5.reactrouter.com/) to switch between the two component views. You should have a **styled toolbar-like control** (simple plain text links are not sufficient) that will allow the user to switch between the example and states component views.
+
+Since this is the first extension from the core ReactJS we import, we're providing you with step-by-step instructions.
+
+1. The project's `package.json` specifies react-router so the npm install command already fetched it for us. We do need to explicitly import it into our `p5.jsx` file. Add the following import line:
+
+```javascript
+import { HashRouter, Route, Link } from "react-router-dom";
+```
+
+The line uses the JavaScript [import](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import) statement to bring in the ReactJS components from React Router: [HashRouter](https://v5.reactrouter.com/web/api/HashRouter), [Route](https://v5.reactrouter.com/web/api/Route), and [Link](https://v5.reactrouter.com/web/api/Link). The `HashRouter` module of React Router uses the fragment portion of the URL for storing information. So we can make `p5.html#/states` mark showing the States view while `p5.html#/example` specifies the Example component view.
+
+2. The most common way of using React Router is to conditionally render the view we want based on the current URL. The [Route](https://v5.reactrouter.com/web/api/Route) component implements this conditional rendering when placed inside a `HashRouter` element like:
+
+```xhtml
+<HashRouter>
+  ...
+  <Route path="/states" component={States} />
+  <Route path="/example" component={Example} />
+  ...
+</HashRouter>
+```
+
+which would render the States component if the URL had` #/states` and the Example component if the URL had `#/example`.
+
+3. Although we could use hyperlinks (i.e. `<a>` tags) to switch views, react-router recommends using the `Link` component to generate the hyperlinks. For example:
+
+```xhtml
+<Link to="/states">States</Link>
+```
+
+generates a hyperlink with `href="#/states"` and the text "States".
+
+## Style
+
+These requirements will be met if your solutions have proper MVC decomposition and follow the style guidelines discussed in lecture and section. **Note that you should not directly manipulate the DOM in your code**. In addition, your code and templates must be clean and readable. Remember to run ESLint before submitting. ESLint should raise no errors.
+
+## Deliverables
+**After implementing part 5, make sure parts 1 through 4 still work!**
+
+Use the standard [submission mechanism](https://github.com/btdobbs/WA/tree/main/Project/00) mechanism to submit.
+
+Your respository should include the following updated files.
+
+- `components`
+- `modelData/example.js`
+- `styles`
+- `getting-started.html`
+- `gettingStarted.jsx`
+- `p2.html`
+- `p2.jsx`
+- `p4.html`
+- `p4.jsx`
+- `p5.html`
+- `p5.jsx`
+- `webpack.config.js`
 
 [^1]: [Stanford Computer Science](https://cs.stanford.edu)
