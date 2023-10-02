@@ -1,0 +1,12 @@
+/* Header.css */
+
+.header {
+  background-color: #3498db;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+}
+
+.logo {
+  max-width: 100px; /* Adjust this to fit your logo */
+}
