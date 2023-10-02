@@ -27,7 +27,7 @@ class Example extends React.Component {
             counter: 0,
             inputValue: '',
             buttonWasClicked: '',
-        };
+        }; //Compiled successfully!
 
         // React events are called directly from DOM event handlers
         // so we cannot directly call the methods of this class. We
