@@ -14,7 +14,7 @@ if (models === undefined) {
 
 models.exampleModel = function () {
   return {
-    name: "Todd Dobbs",
-    motto: "Keep moving forward..."
+    name: "Group Ate",
+    motto: "Always do your best!"
   };
 };
