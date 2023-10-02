@@ -180,7 +180,7 @@ class Example extends React.Component {
                 `<p>My name is "{this.state.name}".</p>`
             }
           </code>
-        </pre>
+                </pre>
                 <p>
                     should render as:
                 </p>
@@ -242,7 +242,7 @@ class Example extends React.Component {
 }`
             }
           </code>
-        </pre>
+                </pre>
                 <p>
                     Calling this function from a template
                     (i.e. <code>{'{this.outOfBandJSX(true)}'}</code>)
@@ -273,7 +273,7 @@ class Example extends React.Component {
 </div>`
             }
           </code>
-        </pre>
+                </pre>
                 <p>
                     Short-circuit boolean operations such as {'"&&"'} can
                     also be used to control what is rendered. For example the following
@@ -297,7 +297,7 @@ class Example extends React.Component {
 `
             }
           </code>
-        </pre>
+                </pre>
                 <p>
                     Generates the output:
                 </p>
@@ -330,7 +330,7 @@ class Example extends React.Component {
 <input type="text" value={this.state.inputValue} onChange={this.handleChangeBound} />`
             }
           </code>
-        </pre>
+                </pre>
                 <p>
                     will display the text from the inputValue property of the
                     Component&apos;s state in the input box (it starts
@@ -393,7 +393,7 @@ class Example extends React.Component {
 </div>`
             }
           </code>
-        </pre>
+                </pre>
                 <p>
                     When the button is pushed it will call the arrow function, which will then call the
                     method <code>handleButtonClick</code> with the specified argument.
